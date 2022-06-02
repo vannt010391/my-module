@@ -16,25 +16,37 @@
         <field name="model">library.book</field>
         <field name="arch" type="xml">
             <form>
-                <group>
+                <header>
+                    <button name="book_rent" string="Rent this book" type="object" class="btn-primary"/>
+                    <!-- <button name="return_all_books" string="Return all book" type="object" class="btn-primary"/> -->
+                    <button name="make_available" string="Make Available" type="object" class="btn-primary"/>
+                    <button name="make_borrowed" string="Make Borrowed" type="object" class="btn-primary" />
+                    <button name="make_lost" string="Make Lost" type="object" class="btn-primary"/>
+                    <!-- <button name="average_book_occupation" string="Log Average Occ." type="object" class="btn-primary"/> -->
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="author_ids" widget="many2many_tags"/>
-                        <field name="state"/>
-                        <field name="pages"/>
-                        <field name="notes"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="author_ids" widget="many2many_tags"/>
+                            <field name="category_id"/>
+                            <field name="cost_price"/>
+                            <field name="state"/>
+                            <field name="pages"/>
+                            <field name="notes"/>
+                            <!-- <field name="old_edition" /> -->
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="short_name"/>
+                            <field name="date_release"/>
+                            <field name="date_updated"/>
+                            <field name="cover" widget="image" class="oe_avatar"/>
+                            <field name="reader_rating"/>
+                        </group>
                     </group>
-                    <group>
-                        <field name="short_name"/>
-                        <field name="date_release"/>
-                        <field name="date_updated"/>
-                        <field name="cover" widget="image" class="oe_avatar"/>
-                        <field name="reader_rating"/>
-                    </group>
-                    <group>
-                        <field name="description"/>
-                    </group>
-                </group>
+                </sheet>
             </form>
         </field>
     </record>
@@ -45,8 +57,11 @@
         <field name="model">library.book</field>
         <field name="arch" type="xml">
             <tree>
+                <!-- <field name="cover" widget="image" class="oe_avatar" size="2"/> -->
                 <field name="name"/>
                 <field name="date_release"/>
+                <field name="author_ids" widget="many2many_tags"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
