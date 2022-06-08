@@ -9,3 +9,5 @@ acl_library_rent_wizard,library.library_rent_wizard,model_library_rent_wizard,gr
 acl_library_return_wizard,library.library_return_wizard,model_library_return_wizard,group_librarian,1,1,1,1
 acl_book_rent_stage,library.book_rent_stage_default,model_library_rent_stage,,1,0,0,0
 acl_book_rent_librarian_stage,library.book_rent_stage_librarian,model_library_rent_stage,group_librarian,1,1,1,1
+acl_book_rent_tags,library.book_rent_tags_default,model_library_rent_tag,,1,0,0,0
+acl_book_rent_librarian_tags,library.book_rent_tags_librarian,model_library_rent_tag,group_librarian,1,1,1,1

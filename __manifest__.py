@@ -9,7 +9,7 @@
     'maintainer': 'Epikla',
     'company': 'Epikla',
     'website': 'https://colette.odooteam.helpbots.sg/',
-    'depends': ['base'] ,       
+    'depends': ['base', 'contacts'] ,       
     'data': [
         'views/library_book.xml',
         'views/library_book_category.xml',
@@ -18,7 +18,9 @@
         'security/ir.model.access.csv',
         'wizard/library_book_rent_wizard.xml',
         'wizard/library_book_return_wizard.xml',
-        'data/library_stage.xml'
+        'data/library_stage.xml',
+        'reports/book_rent_templates.xml',
+        'reports/book_rent_report.xml',
         # 'views/library_book_statistics.xml',
         # 'views/res_config_settings_views.xml',
     ],

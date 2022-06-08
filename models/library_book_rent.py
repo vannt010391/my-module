@@ -17,6 +17,7 @@ class LibraryRentStage(models.Model):
          ('borrowed', 'Borrowed'),
          ('lost', 'Lost')],
         'State', default="available")
+    
 
 
 class LibraryBookRent(models.Model):
@@ -38,6 +39,7 @@ class LibraryBookRent(models.Model):
     state = fields.Selection([('ongoing', 'Ongoing'), ('returned', 'Returned'), ('lost', 'Lost')], 'State', default='ongoing', required=True)
     rent_date = fields.Date(default=fields.Date.today)
     return_date = fields.Date()
+    color = fields.Integer()
 
     # chapter 12
     stage_id = fields.Many2one(
@@ -45,6 +47,9 @@ class LibraryBookRent(models.Model):
         default=_default_rent_stage,
         group_expand='_group_expand_stages'
     )
+    popularity = fields.Selection([('no', 'No Demand'), ('low', 'Low Demand'), ('medium', 'Average Demand'), ('high', 'High Demand'),])
+    tag_ids = fields.Many2many('library.rent.tag')
+
 
     # @api.model
     # def create(self, vals):
@@ -81,3 +86,12 @@ class LibraryBookRent(models.Model):
         return rent
 
 
+class LibraryRentTags(models.Model):
+    _name = 'library.rent.tag'
+    name = fields.Char()
+    color = fields.Integer()
+
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+    rent_ids = fields.One2many('library.book.rent', 'borrower_id')
