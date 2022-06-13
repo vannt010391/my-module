@@ -79,6 +79,18 @@ class LibraryBook(models.Model):
 
     old_edition = fields.Many2one('library.book', string='Old Edition')
 
+    color = fields.Integer()
+    
+    active = fields.Boolean(default=True)
+
+    rent_count = fields.Integer(compute="_compute_rent_count")
+
+    def _compute_rent_count(self):
+        BookRent = self.env['library.book.rent']
+        for book in self:
+            book.rent_count = BookRent.search_count([('book_id', '=', book.id)])
+
+
     @api.model
     def _referencable_models(self):
         models = self.env['ir.model'].search([('field_id.name', '=', 'message_ids')])
@@ -120,15 +132,15 @@ class LibraryBook(models.Model):
     def name_get(self):
         """ This method used to customize display name of the record """
         result = []
-        # for record in self:
-        #     rec_name = "%s (%s)" % (record.name, record.date_release)
-        #     result.append((record.id, rec_name))
-        # return result
-        for book in self:
-            authors = book.author_ids.mapped('name')
-            name = '%s (%s)' % (book.name, ','.join(authors))
-            result.append((book.id, name))
+        for record in self:
+            rec_name = "%s (%s)" % (record.name, record.date_release)
+            result.append((record.id, rec_name))
         return result
+        # for book in self:
+        #     authors = book.author_ids.mapped('name')
+        #     name = '%s (%s)' % (book.name, ','.join(authors))
+        #     result.append((book.id, name))
+        # return result
 
     _sql_constraints = [
         ('name_uniq', 'UNIQUE (name)', 'Book title must be unique.'),
@@ -214,8 +226,8 @@ class LibraryBook(models.Model):
     
     @api.model
     def books_with_multiple_authors(self, all_books):
-        return all_books.filter(predicate)
-        # return all_books.filter(lambda b: len(b.author_ids) > 1) # lambda function
+        # return all_books.filter(predicate)
+        return all_books.filter(lambda b: len(b.author_ids) > 1) # lambda function
         
     def predicate(book):
         if len(book.author_ids) > 1:
@@ -270,32 +282,32 @@ class LibraryBook(models.Model):
         #     record.books_returns()
         wizard.create({'borrower_id': self.env.user.partner_id.id}).books_returns()
 
-# class ResPartner(models.Model):
-#     _inherit = 'res.partner'
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
 
-#     published_book_ids = fields.One2many('library.book', 'publisher_id', string='Published Books')
-#     authored_book_ids = fields.Many2many(
-#         'library.book',
-#         string='Authored Books',
-#         # relation='library_book_res_partner_rel'  # optional
-#     )
+    published_book_ids = fields.One2many('library.book', 'publisher_id', string='Published Books')
+    authored_book_ids = fields.Many2many(
+        'library.book',
+        string='Authored Books',
+        # relation='library_book_res_partner_rel'  # optional
+    )
 
-#     count_books = fields.Integer('Number of Authored Books', compute='_compute_count_books')
+    count_books = fields.Integer('Number of Authored Books', compute='_compute_count_books')
 
-#     @api.depends('authored_book_ids')
-#     def _compute_count_books(self):
-#         for r in self:
-#             r.count_books = len(r.authored_book_ids)
+    @api.depends('authored_book_ids')
+    def _compute_count_books(self):
+        for r in self:
+            r.count_books = len(r.authored_book_ids)
 
 
-# class LibraryMember(models.Model):
-#     _name = 'library.member'
-#     _inherits = {'res.partner': 'partner_id'}
+class LibraryMember(models.Model):
+    _name = 'library.member'
+    _inherits = {'res.partner': 'partner_id'}
 
-#     _description = 'Library Member'
+    _description = 'Library Member'
 
-#     partner_id = fields.Many2one('res.partner', ondelete='cascade')
-#     date_start = fields.Date('Member Since')
-#     date_end = fields.Date('Termination Date')
-#     member_number = fields.Char()
-#     date_of_birth = fields.Date('Date of birth')
+    partner_id = fields.Many2one('res.partner', ondelete='cascade')
+    date_start = fields.Date('Member Since')
+    date_end = fields.Date('Termination Date')
+    member_number = fields.Char()
+    date_of_birth = fields.Date('Date of birth')

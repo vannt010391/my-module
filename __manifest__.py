@@ -14,6 +14,7 @@
         'views/library_book.xml',
         'views/library_book_category.xml',
         'views/library_book_rent.xml',
+        # 'views/templates.xml',
         'security/groups.xml',
         'security/ir.model.access.csv',
         'wizard/library_book_rent_wizard.xml',
@@ -21,8 +22,13 @@
         'data/library_stage.xml',
         'reports/book_rent_templates.xml',
         'reports/book_rent_report.xml',
+        'views/main_templates.xml',
+
         # 'views/library_book_statistics.xml',
         # 'views/res_config_settings_views.xml',
+    ],
+    'qweb': [ 
+        'static/src/xml/qweb_template.xml',
     ],
     'demo': [''],
     'images': ['static/icon.png'],

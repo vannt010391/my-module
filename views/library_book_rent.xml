@@ -91,7 +91,9 @@
             <kanban default_group_by="stage_id" on_create="quick_create" quick_create_view="colette_library.library_book_rent_view_form_minimal">
                 <field name="stage_id" />
                 <field name="color" />
-                <progressbar field="popularity" colors='{"low": "success", "medium": "warning", "high": "danger"}'/>
+                <field name="activity_state"/>
+                <!-- <progressbar field="popularity" colors='{"low": "success", "medium": "warning", "high": "danger"}'/> -->
+                <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
@@ -126,6 +128,9 @@
                                     </span>
                                     <div>
                                         <field name="popularity" widget="priority"/>
+                                    </div>
+                                    <div>
+                                        <field name="activity_ids" widget="kanban_activity"/>
                                     </div>
                                 </div>
                             </div>

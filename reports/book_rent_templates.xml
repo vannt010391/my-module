@@ -3,20 +3,79 @@
 <template id="book_rents_template">
     <t t-call="web.html_container">
         <t t-foreach="docs" t-as="doc">
-            <t t-call="web.internal_layout">
+            <t t-call="web.external_layout">
                 <div class="page">
-                    <h1>Book Rent for <t t-esc="doc.name"/></h1>
+                    <!-- <h1>Book Rent for <t t-esc="doc.name" /></h1> -->
+                    <table class="table table-condensed" style="border: 3px solid black !important;">
+                                    <tr>
+                                        <td width="40%">
+                                            <p style="text-align:center;padding-top:10px;">
+                                                <img t-if="not doc.image_1920"
+                                                     t-att-src="'/web/static/src/img/placeholder.png'" height="140"
+                                                     border="1" width="120"/>
+                                                <img t-if="doc.image_1920"
+                                                     t-att-src="'data:image/png;base64,%s' % to_text(doc.image_1920)"
+                                                     height="140" border="1" width="120"/>
+                                            </p>
+                                        </td>
+                                        <td width="60%">
+                                            <table>
+                                                <tr>
+                                                    <td colspan="3" class="text-center">
+                                                        <span t-field="doc.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span>
+                                                            <strong>Phone:</strong>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>:</span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="doc.phone"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span>
+                                                            <strong>Email:</strong>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>:</span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="doc.email"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                    </table>
+                    <h1 style="text-align: center">List of rent orders</h1>
+                    
                     <table class="table table-condensed">
                         <thead>
                             <tr>
+                                <th>Cover</th>
                                 <th>Title</th>
+                                <th>Book Author</th>
+                                <th>Rent Date</th>
                                 <th>Expected return date</th>
+                                <!-- <th>Status</th> -->
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="doc.rent_ids" t-as="rent" >
+                            <tr t-foreach="doc.rent_ids" t-as="rent">
+                                <td><img t-att-src="'data:image/png;base64,%s' % to_text(rent.book_id.cover)" height="60" border="1" width="60"/></td>
                                 <td><t t-esc="rent.book_id.name" /></td>
+                                <td><t t-esc="rent.book_id.author_ids.name" /></td>
+                                <td><t t-esc="rent.rent_date" /></td>
                                 <td><t t-esc="rent.return_date" /></td>
+                                <!-- <td><t t-esc="rent.book_id.state"/></td> -->
                             </tr>
                         </tbody>
                     </table>

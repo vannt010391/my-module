@@ -22,6 +22,7 @@ class LibraryRentStage(models.Model):
 
 class LibraryBookRent(models.Model):
     _name = 'library.book.rent'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     #### chapter 12
     @api.model
